@@ -12,6 +12,7 @@ Future<OkCancelResult> showOkAlertDialog({
   String? title,
   String? message,
   String? okLabel,
+  TextStyle okTextStyle = const TextStyle(),
   bool barrierDismissible = true,
   @Deprecated('Use `style` instead.') AdaptiveStyle? alertStyle,
   AdaptiveStyle? style,
@@ -45,6 +46,7 @@ Future<OkCancelResult> showOkAlertDialog({
       AlertDialogAction(
         label: okLabel ?? MaterialLocalizations.of(context).okButtonLabel,
         key: OkCancelResult.ok,
+        textStyle: okTextStyle,
         isDefaultAction: isMacOS,
       )
     ],

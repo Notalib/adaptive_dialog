@@ -16,7 +16,9 @@ Future<OkCancelResult> showOkCancelAlertDialog({
   String? title,
   String? message,
   String? okLabel,
+  TextStyle okTextStyle = const TextStyle(),
   String? cancelLabel,
+  TextStyle cancelTextStyle = const TextStyle(),
   OkCancelAlertDefaultType? defaultType,
   bool isDestructiveAction = false,
   bool barrierDismissible = true,
@@ -58,6 +60,7 @@ Future<OkCancelResult> showOkCancelAlertDialog({
         label: cancelLabel ?? defaultCancelLabel(),
         key: OkCancelResult.cancel,
         isDefaultAction: defaultType == OkCancelAlertDefaultType.cancel,
+        textStyle: cancelTextStyle,
       ),
       AlertDialogAction(
         label: okLabel ?? MaterialLocalizations.of(context).okButtonLabel,
@@ -65,6 +68,7 @@ Future<OkCancelResult> showOkCancelAlertDialog({
         isDefaultAction:
             defaultType == null || defaultType == OkCancelAlertDefaultType.ok,
         isDestructiveAction: isDestructiveAction,
+        textStyle: okTextStyle,
       ),
     ],
   );
