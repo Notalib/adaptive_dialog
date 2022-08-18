@@ -24,7 +24,7 @@ class MacOSTextInputDialog extends StatefulWidget {
     this.autoSubmit = false,
   });
   @override
-  _MacOSTextInputDialogState createState() => _MacOSTextInputDialogState();
+  State<MacOSTextInputDialog> createState() => _MacOSTextInputDialogState();
 
   final List<DialogTextField> textFields;
   final String? title;
@@ -146,7 +146,7 @@ class _MacOSTextInputDialogState extends State<MacOSTextInputDialog> {
                             textCapitalization: field.textCapitalization,
                             minLines: field.minLines,
                             maxLines: field.maxLines,
-                            maxLength: field.maxLenght,
+                            maxLength: field.maxLength,
                             autocorrect: field.autocorrect,
                             prefix:
                                 prefixText == null ? null : Text(prefixText),

@@ -21,7 +21,7 @@ class IOSTextInputDialog extends StatefulWidget {
     this.autoSubmit = false,
   });
   @override
-  _IOSTextInputDialogState createState() => _IOSTextInputDialogState();
+  State<IOSTextInputDialog> createState() => _IOSTextInputDialogState();
 
   final List<DialogTextField> textFields;
   final String? title;
@@ -136,7 +136,7 @@ class _IOSTextInputDialogState extends State<IOSTextInputDialog> {
                   obscureText: field.obscureText,
                   keyboardType: field.keyboardType,
                   textCapitalization: field.textCapitalization,
-                  maxLength: field.maxLenght,
+                  maxLength: field.maxLength,
                   minLines: field.minLines,
                   maxLines: field.maxLines,
                   autocorrect: field.autocorrect,
