@@ -123,6 +123,7 @@ class DialogTextField {
   const DialogTextField({
     this.initialText,
     this.hintText,
+    this.hintStyle,
     this.obscureText = false,
     this.validator,
     this.keyboardType,
@@ -136,6 +137,7 @@ class DialogTextField {
   });
   final String? initialText;
   final String? hintText;
+  final TextStyle? hintStyle;
   final bool obscureText;
   final FormFieldValidator<String>? validator;
   final TextInputType? keyboardType;

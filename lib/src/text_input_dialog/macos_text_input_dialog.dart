@@ -141,6 +141,7 @@ class _MacOSTextInputDialogState extends State<MacOSTextInputDialog> {
                             controller: c,
                             autofocus: i == 0,
                             placeholder: field.hintText,
+                            placeholderStyle: field.hintStyle,
                             obscureText: field.obscureText,
                             keyboardType: field.keyboardType,
                             textCapitalization: field.textCapitalization,

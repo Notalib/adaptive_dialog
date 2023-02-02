@@ -130,6 +130,7 @@ class _MaterialTextInputDialogState extends State<MaterialTextInputDialog> {
                   autocorrect: field.autocorrect,
                   decoration: InputDecoration(
                     hintText: field.hintText,
+                    hintStyle: field.hintStyle,
                     prefixText: field.prefixText,
                     suffixText: field.suffixText,
                   ),
