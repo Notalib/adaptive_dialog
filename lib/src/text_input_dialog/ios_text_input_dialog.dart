@@ -90,8 +90,8 @@ class _IOSTextInputDialogState extends State<IOSTextInputDialog> {
       const radius = 6.0;
       const borderSide = BorderSide(
         color: CupertinoDynamicColor.withBrightness(
-          color: Color(0x33000000),
-          darkColor: Color(0x33FFFFFF),
+          color: Color(0xFF676767),
+          darkColor: Color(0xFF7B7B7B),
         ),
         width: 0,
       );
