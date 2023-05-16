@@ -1,6 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
 /// Show [confirmation dialog](https://material.io/components/dialogs#confirmation-dialog),
 /// whose appearance is adaptive according to platform
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 /// for performance optimization.
 /// if [initialSelectedActionKey] is set, corresponding action is selected
 /// initially. This works only for Android style.
+@useResult
 Future<T?> showConfirmationDialog<T>({
   required BuildContext context,
   required String title,
@@ -31,10 +33,11 @@ Future<T?> showConfirmationDialog<T>({
   AdaptiveDialogBuilder? builder,
   RouteSettings? routeSettings,
 }) {
-  void pop(T? key) => Navigator.of(
-        context,
-        rootNavigator: useRootNavigator,
-      ).pop(key);
+  final navigator = Navigator.of(
+    context,
+    rootNavigator: useRootNavigator,
+  );
+  void pop(T? key) => navigator.pop(key);
   final theme = Theme.of(context);
   final adaptiveStyle = style ?? AdaptiveDialog.instance.defaultStyle;
   return adaptiveStyle.isMaterial(theme)
@@ -144,14 +147,14 @@ class _ConfirmationMaterialDialogState<T>
                 children: [
                   Text(
                     widget.title,
-                    style: theme.textTheme.headline6,
+                    style: theme.textTheme.titleLarge,
                   ),
                   if (message != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: Text(
                         message,
-                        style: theme.textTheme.caption,
+                        style: theme.textTheme.bodySmall,
                       ),
                     ),
                 ],

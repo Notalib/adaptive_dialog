@@ -1,3 +1,19 @@
+## 1.8.3
+
+- Fix no title `showModalActionSheet` for Material style
+
+## 1.8.2
+
+- Fix the error with `pop` when `BuildContext` is disposed
+
+## 1.8.1+1
+
+- Add documentation about `barrierDismissible`
+
+## 1.8.1
+
+- Add `@useResult` to each functions
+
 ## 1.8.0
 
 - Support textCapitalization in DialogTextField (#91)
@@ -7,6 +23,7 @@
 
 - Adde maxLength to fields (#84)
 - Expose route settings on all apis (#88)
+
 ## 1.6.4
 
 - Use accentColor for macOS by using dynamic_color

@@ -5,13 +5,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intersperse/intersperse.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:meta/meta.dart';
 
 /// Show alert dialog, whose appearance is adaptive according to platform
 ///
+/// [barrierDismissible] (default: true) only works for Material style.
 /// [useActionSheetForIOS] (default: false) only works for
 /// iOS style. If it is set to true, [showModalActionSheet] is called
 /// instead.
 /// [actionsOverflowDirection] works only for Material style currently.
+@useResult
 Future<T?> showAlertDialog<T>({
   required BuildContext context,
   String? title,
@@ -30,10 +33,11 @@ Future<T?> showAlertDialog<T>({
   Widget? macOSApplicationIcon,
   RouteSettings? routeSettings,
 }) {
-  void pop(T? key) => Navigator.of(
-        context,
-        rootNavigator: useRootNavigator,
-      ).pop(key);
+  final navigator = Navigator.of(
+    context,
+    rootNavigator: useRootNavigator,
+  );
+  void pop(T? key) => navigator.pop(key);
   final theme = Theme.of(context);
   final colorScheme = theme.colorScheme;
   final adaptiveStyle = style ?? AdaptiveDialog.instance.defaultStyle;

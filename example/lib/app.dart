@@ -6,19 +6,16 @@ import 'package:mono_kit/mono_kit.dart';
 import 'router/router.dart';
 
 class App extends ConsumerWidget {
-  const App({Key? key}) : super(key: key);
+  const App({super.key});
   static const title = 'adaptive_dialog Demo';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
     return MaterialApp.router(
       title: title,
       theme: lightTheme(),
       darkTheme: darkTheme(),
-      routeInformationParser: router.routeInformationParser,
-      routerDelegate: router.routerDelegate,
-      routeInformationProvider: router.routeInformationProvider,
+      routerConfig: ref.watch(routerProvider),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

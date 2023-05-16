@@ -8,11 +8,11 @@ import 'package:go_router/go_router.dart';
 class SheetRoute extends GoRouteData {
   const SheetRoute();
   @override
-  Widget build(BuildContext context) => const SheetPage();
+  Widget build(BuildContext context, GoRouterState state) => const SheetPage();
 }
 
 class SheetPage extends StatelessWidget {
-  const SheetPage({Key? key}) : super(key: key);
+  const SheetPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +44,23 @@ class SheetPage extends StatelessWidget {
               final result = await showModalActionSheet<String>(
                 context: context,
                 title: 'Title',
+                actions: [
+                  const SheetAction(
+                    icon: Icons.info,
+                    label: 'Hello',
+                    key: 'helloKey',
+                  ),
+                ],
+              );
+              logger.info(result);
+            },
+          ),
+          ListTile(
+            title: const Text('No Title'),
+            onTap: () async {
+              final result = await showModalActionSheet<String>(
+                context: context,
+                message: 'Message',
                 actions: [
                   const SheetAction(
                     icon: Icons.info,
