@@ -1,3 +1,17 @@
+## 1.9.0-x-macos-beta.0
+
+- Depends on macos_ui again
+
+## 1.9.0-no-macos.3
+
+- fix: pop with dialog context (#115)
+
+## 1.9.0-no-macos.2
+
+- Fix Flutter 3.10 compile error caused by macos_ui package
+  - Remove [macos_ui](https://pub.dev/packages/macos_ui) dependency temporarily and show same UI as iOS instead
+  - Upon stable release, the UI that uses the original macos_ui will be restored
+
 ## 1.8.3
 
 - Fix no title `showModalActionSheet` for Material style
