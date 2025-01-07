@@ -17,7 +17,8 @@ class IOSTextInputDialog extends StatefulWidget {
     this.isDestructiveAction = false,
     this.style = AdaptiveStyle.adaptive,
     this.useRootNavigator = true,
-    this.onWillPop,
+    required this.canPop,
+    required this.onPopInvokedWithResult,
     this.autoSubmit = false,
   });
   @override
@@ -33,7 +34,8 @@ class IOSTextInputDialog extends StatefulWidget {
   final bool isDestructiveAction;
   final AdaptiveStyle style;
   final bool useRootNavigator;
-  final WillPopCallback? onWillPop;
+  final bool canPop;
+  final PopInvokedWithResultCallback<List<String>?>? onPopInvokedWithResult;
   final bool autoSubmit;
 }
 
@@ -114,8 +116,9 @@ class _IOSTextInputDialogState extends State<IOSTextInputDialog> {
     }
 
     final validationMessage = _validationMessage;
-    return WillPopScope(
-      onWillPop: widget.onWillPop,
+    return PopScope(
+      canPop: widget.canPop,
+      onPopInvokedWithResult: widget.onPopInvokedWithResult,
       child: CupertinoAlertDialog(
         title: title == null ? null : Text(title),
         content: Column(
@@ -130,6 +133,7 @@ class _IOSTextInputDialogState extends State<IOSTextInputDialog> {
                 final prefixText = field.prefixText;
                 final suffixText = field.suffixText;
                 return CupertinoTextField(
+                  contextMenuBuilder: _contextMenuBuilder,
                   controller: c,
                   autofocus: i == 0,
                   placeholder: field.hintText,
@@ -151,6 +155,7 @@ class _IOSTextInputDialogState extends State<IOSTextInputDialog> {
                   onSubmitted: isLast && widget.autoSubmit
                       ? (_) => submitIfValid()
                       : null,
+                  spellCheckConfiguration: field.spellCheckConfiguration,
                 );
               },
             ),
@@ -212,3 +217,19 @@ class _IOSTextInputDialogState extends State<IOSTextInputDialog> {
     return validations.isEmpty;
   }
 }
+
+/// SystemContextMenu対応のcontextMenuBuilder
+///
+/// SystemContextMenuがサポートされている場合はそれを利用したネイティブUIで、
+/// それ以外の時は無指定の時と同じ挙動
+Widget _contextMenuBuilder(
+  BuildContext context,
+  EditableTextState editableTextState,
+) =>
+    SystemContextMenu.isSupported(context)
+        ? SystemContextMenu.editableText(
+            editableTextState: editableTextState,
+          )
+        : AdaptiveTextSelectionToolbar.editableText(
+            editableTextState: editableTextState,
+          );

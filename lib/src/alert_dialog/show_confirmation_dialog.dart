@@ -14,6 +14,9 @@ import 'package:meta/meta.dart';
 /// for performance optimization.
 /// if [initialSelectedActionKey] is set, corresponding action is selected
 /// initially. This works only for Android style.
+/// [toggleable] option is only supported in material dialog.
+/// When set to `false`, the selected action cannot be unselected by tapping.
+/// The default value is `true`.
 @useResult
 Future<T?> showConfirmationDialog<T>({
   required BuildContext context,
@@ -29,9 +32,11 @@ Future<T?> showConfirmationDialog<T>({
   bool useRootNavigator = true,
   bool shrinkWrap = true,
   bool fullyCapitalizedForMaterial = true,
-  WillPopCallback? onWillPop,
+  bool canPop = true,
+  PopInvokedWithResultCallback<T>? onPopInvokedWithResult,
   AdaptiveDialogBuilder? builder,
   RouteSettings? routeSettings,
+  bool toggleable = true,
 }) {
   void pop({required BuildContext context, required T? key}) => Navigator.of(
         context,
@@ -60,7 +65,9 @@ Future<T?> showConfirmationDialog<T>({
               contentMaxHeight: contentMaxHeight,
               shrinkWrap: shrinkWrap,
               fullyCapitalized: fullyCapitalizedForMaterial,
-              onWillPop: onWillPop,
+              canPop: canPop,
+              onPopInvokedWithResult: onPopInvokedWithResult,
+              toggleable: toggleable,
             );
             return builder == null ? dialog : builder(context, dialog);
           },
@@ -73,7 +80,8 @@ Future<T?> showConfirmationDialog<T>({
           actions: actions.convertToSheetActions(),
           style: style,
           useRootNavigator: useRootNavigator,
-          onWillPop: onWillPop,
+          canPop: canPop,
+          onPopInvokedWithResult: onPopInvokedWithResult,
           builder: builder,
           routeSettings: routeSettings,
         );
@@ -92,7 +100,9 @@ class _ConfirmationMaterialDialog<T> extends StatefulWidget {
     @required this.contentMaxHeight,
     required this.shrinkWrap,
     required this.fullyCapitalized,
-    required this.onWillPop,
+    required this.canPop,
+    required this.onPopInvokedWithResult,
+    required this.toggleable,
   });
 
   final String title;
@@ -105,7 +115,9 @@ class _ConfirmationMaterialDialog<T> extends StatefulWidget {
   final double? contentMaxHeight;
   final bool shrinkWrap;
   final bool fullyCapitalized;
-  final WillPopCallback? onWillPop;
+  final bool canPop;
+  final PopInvokedWithResultCallback<T>? onPopInvokedWithResult;
+  final bool toggleable;
 
   @override
   _ConfirmationMaterialDialogState<T> createState() =>
@@ -130,8 +142,9 @@ class _ConfirmationMaterialDialogState<T>
     final cancelLabel = widget.cancelLabel;
     final okLabel = widget.okLabel;
     final message = widget.message;
-    return WillPopScope(
-      onWillPop: widget.onWillPop,
+    return PopScope(
+      canPop: widget.canPop,
+      onPopInvokedWithResult: widget.onPopInvokedWithResult,
       child: Dialog(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -172,7 +185,10 @@ class _ConfirmationMaterialDialogState<T>
                   children: widget.actions
                       .map(
                         (action) => RadioListTile<T>(
-                          title: Text(action.label),
+                          title: Text(
+                            action.label,
+                            style: action.textStyle,
+                          ),
                           value: action.key,
                           groupValue: _selectedKey,
                           onChanged: (value) {
@@ -180,7 +196,7 @@ class _ConfirmationMaterialDialogState<T>
                               _selectedKey = value;
                             });
                           },
-                          toggleable: true,
+                          toggleable: widget.toggleable,
                         ),
                       )
                       .toList(),
@@ -188,30 +204,35 @@ class _ConfirmationMaterialDialogState<T>
               ),
             ),
             const Divider(height: 0),
-            ButtonBar(
-              layoutBehavior: ButtonBarLayoutBehavior.constrained,
-              children: [
-                TextButton(
-                  child: Text(
-                    (widget.fullyCapitalized
-                            ? cancelLabel?.toUpperCase()
-                            : cancelLabel) ??
-                        MaterialLocalizations.of(context).cancelButtonLabel,
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: OverflowBar(
+                alignment: MainAxisAlignment.end,
+                overflowAlignment: OverflowBarAlignment.end,
+                spacing: 8,
+                children: [
+                  TextButton(
+                    child: Text(
+                      (widget.fullyCapitalized
+                              ? cancelLabel?.toUpperCase()
+                              : cancelLabel) ??
+                          MaterialLocalizations.of(context).cancelButtonLabel,
+                    ),
+                    onPressed: () => widget.onSelect(null),
                   ),
-                  onPressed: () => widget.onSelect(null),
-                ),
-                TextButton(
-                  onPressed: _selectedKey == null
-                      ? null
-                      : () => widget.onSelect(_selectedKey),
-                  child: Text(
-                    (widget.fullyCapitalized
-                            ? okLabel?.toUpperCase()
-                            : okLabel) ??
-                        MaterialLocalizations.of(context).okButtonLabel,
+                  TextButton(
+                    onPressed: _selectedKey == null
+                        ? null
+                        : () => widget.onSelect(_selectedKey),
+                    child: Text(
+                      (widget.fullyCapitalized
+                              ? okLabel?.toUpperCase()
+                              : okLabel) ??
+                          MaterialLocalizations.of(context).okButtonLabel,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

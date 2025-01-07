@@ -38,6 +38,22 @@ class TextInputDialogPage extends ConsumerWidget {
             },
           ),
           ListTile(
+            title: const Text(
+                'No Title/Message(spellCheckConfiguration disabled)'),
+            onTap: () async {
+              final text = await showTextInputDialog(
+                context: context,
+                textFields: const [
+                  DialogTextField(
+                    spellCheckConfiguration: SpellCheckConfiguration.disabled(),
+                    autocorrect: false,
+                  ),
+                ],
+              );
+              logger.info(text);
+            },
+          ),
+          ListTile(
             title: const Text('No Message'),
             onTap: () async {
               final text = await showTextInputDialog(
@@ -181,6 +197,7 @@ class TextInputDialogPage extends ConsumerWidget {
               }
               // ignore: use_build_context_synchronously
               await showOkAlertDialog(
+                // ignore: use_build_context_synchronously
                 context: context,
                 title: 'That\'s right👍',
               );

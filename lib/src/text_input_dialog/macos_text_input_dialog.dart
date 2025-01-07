@@ -20,7 +20,8 @@ class MacOSTextInputDialog extends StatefulWidget {
     this.isDestructiveAction = false,
     this.style = AdaptiveStyle.adaptive,
     this.useRootNavigator = true,
-    this.onWillPop,
+    required this.canPop,
+    required this.onPopInvokedWithResult,
     this.autoSubmit = false,
   });
   @override
@@ -36,7 +37,8 @@ class MacOSTextInputDialog extends StatefulWidget {
   final bool isDestructiveAction;
   final AdaptiveStyle style;
   final bool useRootNavigator;
-  final WillPopCallback? onWillPop;
+  final bool canPop;
+  final PopInvokedWithResultCallback<List<String>?>? onPopInvokedWithResult;
   final bool autoSubmit;
 }
 
@@ -158,6 +160,7 @@ class _MacOSTextInputDialogState extends State<MacOSTextInputDialog> {
                             onSubmitted: isLast && widget.autoSubmit
                                 ? (_) => submitIfValid()
                                 : null,
+                            // No spellCheckConfiguration for macos_ui
                           ),
                         ),
                       );
