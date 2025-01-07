@@ -26,7 +26,8 @@ Future<List<String>?> showTextInputDialog({
   bool useRootNavigator = true,
   VerticalDirection actionsOverflowDirection = VerticalDirection.up,
   bool fullyCapitalizedForMaterial = true,
-  WillPopCallback? onWillPop,
+  bool canPop = true,
+  PopInvokedWithResultCallback<List<String>?>? onPopInvokedWithResult,
   bool autoSubmit = false,
   AdaptiveDialogBuilder? builder,
   RouteSettings? routeSettings,
@@ -54,7 +55,8 @@ Future<List<String>?> showTextInputDialog({
             isDestructiveAction: isDestructiveAction,
             style: adaptiveStyle,
             useRootNavigator: useRootNavigator,
-            onWillPop: onWillPop,
+            canPop: canPop,
+            onPopInvokedWithResult: onPopInvokedWithResult,
             autoSubmit: autoSubmit,
           );
           return builder == null ? dialog : builder(context, dialog);
@@ -78,7 +80,8 @@ Future<List<String>?> showTextInputDialog({
               isDestructiveAction: isDestructiveAction,
               style: adaptiveStyle,
               useRootNavigator: useRootNavigator,
-              onWillPop: onWillPop,
+              canPop: canPop,
+              onPopInvokedWithResult: onPopInvokedWithResult,
               autoSubmit: autoSubmit,
             ),
           );
@@ -107,7 +110,8 @@ Future<List<String>?> showTextInputDialog({
             actionsOverflowDirection: actionsOverflowDirection,
             useRootNavigator: useRootNavigator,
             fullyCapitalized: fullyCapitalizedForMaterial,
-            onWillPop: onWillPop,
+            canPop: canPop,
+            onPopInvokedWithResult: onPopInvokedWithResult,
             autoSubmit: autoSubmit,
           );
           return builder == null ? dialog : builder(context, dialog);
@@ -136,6 +140,7 @@ class DialogTextField {
     this.maxLines = 1,
     this.maxLength,
     this.autocorrect = true,
+    this.spellCheckConfiguration,
   });
   final String? initialText;
   final String? hintText;
@@ -150,4 +155,5 @@ class DialogTextField {
   final int maxLines;
   final int? maxLength;
   final bool autocorrect;
+  final SpellCheckConfiguration? spellCheckConfiguration;
 }
